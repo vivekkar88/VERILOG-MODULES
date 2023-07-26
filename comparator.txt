@@ -1,0 +1,25 @@
+module comparator(x,y,z);
+  input [1:0] x,y;
+  output z;
+  wire z;
+  assign z= (x[0]&y[0]&x[1]&y[1])|(~x[0]&~y[0]&x[1]&y[1])|(~x[0]&~y[0]&~x[1]&~y[1])|(x[0]&y[0]&~x[1]&~y[1]);
+endmodule
+
+module testbench();
+  reg [1:0] x,y;
+  wire z;
+  comparator DUT (x,y,z);
+  
+  initial
+    begin
+      $dumpfile("comparator.vcd");
+      $dumpvars(0,testbench);
+      x=2'b01;y= 2'b00;
+      #10 x=2'b10;y=2'b10;
+      #10 x=2'b01;
+    end
+  initial 
+    begin
+      $monitor("t=%d,x=%2b,y=%2b,z=%b",$time,x,y,z);
+    end
+endmodule
